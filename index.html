@@ -472,6 +472,115 @@ function (position) {
 </script>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const requestForm = document.getElementById("requestHelpForm");
+  const reviewArea = document.getElementById("requestReview");
+
+  if (!requestForm || !reviewArea) return;
+
+  requestForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    // Check that at least one type of help is selected.
+    const selectedHelp = Array.from(
+      requestForm.querySelectorAll('input[name="helpType"]:checked')
+    ).map(item => item.value);
+
+    if (selectedHelp.length === 0) {
+      alert("Please select at least one type of assistance.");
+      return;
+    }
+
+    // Clear any previous review.
+    reviewArea.replaceChildren();
+
+    // Add a heading.
+    function addHeading(text) {
+      const heading = document.createElement("h3");
+      heading.textContent = text;
+      reviewArea.appendChild(heading);
+    }
+
+    // Add information safely to the review.
+    function addLine(label, value) {
+      if (value === null || value === undefined || value === "") return;
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = label + ": " + value;
+      reviewArea.appendChild(paragraph);
+    }
+
+    function getValue(id) {
+      return document.getElementById(id).value.trim();
+    }
+
+    addHeading("Please Review Your Roadside Help Request");
+
+    addLine("Assistance needed", selectedHelp.join(", "));
+    addLine("Other assistance details", getValue("otherHelp"));
+
+    addHeading("Contact Information");
+    addLine("Name", getValue("requestorName"));
+    addLine("Cellphone", getValue("requestorPhone"));
+
+    addHeading("Vehicle Details");
+    addLine("Make", getValue("vehicleMake"));
+    addLine("Model", getValue("vehicleModel"));
+    addLine("Colour", getValue("vehicleColour"));
+    addLine("Year", getValue("vehicleYear"));
+    addLine("Licence plate", getValue("vehiclePlate"));
+
+    addHeading("Location");
+    addLine("Highway or road", getValue("highway"));
+    addLine("Direction", getValue("travelDirection"));
+    addLine("Side of road", getValue("roadSide"));
+    addLine("Nearest town or landmark", getValue("nearestLocation"));
+
+    const latitude = getValue("gpsLatitude");
+    const longitude = getValue("gpsLongitude");
+
+    if (latitude && longitude) {
+      addLine("GPS coordinates", latitude + ", " + longitude);
+
+      const mapLink = document.createElement("a");
+      mapLink.href =
+        "https://www.google.com/maps?q=" + latitude + "," + longitude;
+      mapLink.textContent = "View location on Google Maps";
+      mapLink.target = "_blank";
+      mapLink.rel = "noopener noreferrer";
+      reviewArea.appendChild(mapLink);
+    } else {
+      addLine("GPS location", "Not captured");
+    }
+
+    addHeading("Passengers");
+    addLine("Adults", getValue("adultCount"));
+    addLine("Youth", getValue("youthCount"));
+    addLine("Children", getValue("childCount"));
+    addLine(
+      "Older adult needing additional assistance",
+      document.getElementById("olderAdult").checked ? "Yes" : "No"
+    );
+
+    addHeading("Additional Information");
+    addLine("Other details", getValue("additionalDetails"));
+
+    const notice = document.createElement("p");
+    notice.textContent =
+      "This is a private preview only. Your request has NOT been sent or shared with helpers.";
+    reviewArea.appendChild(notice);
+
+    reviewArea.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  });
+
+});
+</script>
+
 </body>
   
 </html>
