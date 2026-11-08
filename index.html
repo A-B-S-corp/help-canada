@@ -232,13 +232,119 @@
       Never put yourself or others in danger to provide assistance.
     </section>
 
-    <section class="panel" id="requestPanel">
-      <h2>Request Roadside Help</h2>
-      <p>This section will contain your roadside assistance request form.</p>
-      <p>Planned options include flat tire, battery boost, out of fuel,
-      mechanical trouble, towing and other assistance.</p>
-      <button class="back-button" onclick="goHome()">Back to Home</button>
-    </section>
+    
+<section class="panel" id="requestPanel">
+  <h2>Request Roadside Help</h2>
+  <p>Please provide details so nearby helpers can understand your situation.</p>
+
+  <form id="requestHelpForm">
+
+    <h3>1. What help do you need?</h3>
+    <p>Select all that apply.</p>
+
+    <div class="form-group">
+      <label><input type="checkbox" name="helpType" value="Flat tire"> Flat tire</label>
+      <label><input type="checkbox" name="helpType" value="Battery boost"> Battery boost</label>
+      <label><input type="checkbox" name="helpType" value="Out of fuel"> Out of fuel</label>
+      <label><input type="checkbox" name="helpType" value="Mechanical trouble"> Mechanical trouble</label>
+      <label><input type="checkbox" name="helpType" value="Towing"> Towing</label>
+      <label><input type="checkbox" name="helpType" value="Other assistance"> Other assistance</label>
+    </div>
+
+    <label for="otherHelp">Describe other assistance (if applicable)</label>
+    <textarea id="otherHelp" name="otherHelp" rows="2" placeholder="Describe what happened"></textarea>
+
+    <h3>2. Your contact information</h3>
+
+    <label for="requestorName">Your name *</label>
+    <input type="text" id="requestorName" name="requestorName" required autocomplete="name">
+
+    <label for="requestorPhone">Cellphone number *</label>
+    <input type="tel" id="requestorPhone" name="requestorPhone" required autocomplete="tel" placeholder="e.g. 306-555-1234">
+
+    <h3>3. Your vehicle</h3>
+
+    <label for="vehicleMake">Vehicle make (company) *</label>
+    <input type="text" id="vehicleMake" name="vehicleMake" required placeholder="e.g. Toyota">
+
+    <label for="vehicleModel">Vehicle model *</label>
+    <input type="text" id="vehicleModel" name="vehicleModel" required placeholder="e.g. RAV4">
+
+    <label for="vehicleColour">Vehicle colour *</label>
+    <input type="text" id="vehicleColour" name="vehicleColour" required placeholder="e.g. White">
+
+    <label for="vehicleYear">Vehicle year (optional)</label>
+    <input type="number" id="vehicleYear" name="vehicleYear" min="1950" max="2035" placeholder="e.g. 2022">
+
+    <label for="vehiclePlate">Licence plate (optional)</label>
+    <input type="text" id="vehiclePlate" name="vehiclePlate" placeholder="Licence plate number">
+
+    <h3>4. Where are you located?</h3>
+
+    <label for="highway">Highway or road number/name *</label>
+    <input type="text" id="highway" name="highway" required placeholder="e.g. Highway 1">
+
+    <label for="travelDirection">Direction of travel *</label>
+    <select id="travelDirection" name="travelDirection" required>
+      <option value="">Select direction</option>
+      <option>North</option>
+      <option>South</option>
+      <option>East</option>
+      <option>West</option>
+      <option>Not sure</option>
+    </select>
+
+    <label for="roadSide">Which side of the road are you on? *</label>
+    <select id="roadSide" name="roadSide" required>
+      <option value="">Select road side</option>
+      <option>Right shoulder</option>
+      <option>Left shoulder</option>
+      <option>Median</option>
+      <option>Rest area or parking area</option>
+      <option>Not sure</option>
+    </select>
+
+    <label for="nearestLocation">Nearest town, exit or landmark *</label>
+    <input type="text" id="nearestLocation" name="nearestLocation" required placeholder="e.g. Near Moose Jaw exit">
+
+    <button type="button" id="getLocationButton">Get My GPS Location</button>
+    <p id="locationStatus" aria-live="polite">GPS location has not been captured.</p>
+    <input type="hidden" id="gpsLatitude" name="gpsLatitude">
+    <input type="hidden" id="gpsLongitude" name="gpsLongitude">
+
+    <h3>5. Passengers travelling with you</h3>
+
+    <label for="adultCount">Adults</label>
+    <input type="number" id="adultCount" name="adultCount" min="0" value="1">
+
+    <label for="youthCount">Youth</label>
+    <input type="number" id="youthCount" name="youthCount" min="0" value="0">
+
+    <label for="childCount">Children</label>
+    <input type="number" id="childCount" name="childCount" min="0" value="0">
+
+    <label>
+      <input type="checkbox" id="olderAdult" name="olderAdult">
+      An older adult may need additional assistance
+    </label>
+
+    <h3>6. Additional information</h3>
+
+    <label for="additionalDetails">Anything else helpers should know?</label>
+    <textarea id="additionalDetails" name="additionalDetails" rows="3" placeholder="Describe any other important details"></textarea>
+
+    <p class="safety-note">
+      <strong>Safety reminder:</strong> If anyone is injured, in immediate danger,
+      or facing an emergency, call 911. This service is for non-emergency roadside help.
+    </p>
+
+    <button type="submit" class="primary-button">Review My Request</button>
+    <button type="button" class="back-button" onclick="goHome()">Back to Home</button>
+
+    <div id="requestReview" aria-live="polite"></div>
+
+  </form>
+</section>
 
     <section class="panel" id="helperPanel">
       <h2>Offer Roadside Help</h2>
