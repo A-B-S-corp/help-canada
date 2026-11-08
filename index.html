@@ -312,21 +312,32 @@
     <input type="hidden" id="gpsLatitude" name="gpsLatitude">
     <input type="hidden" id="gpsLongitude" name="gpsLongitude">
 
-    <h3>5. Passengers travelling with you</h3>
+    
+<h3>5. Passengers travelling with you</h3>
 
-    <label for="adultCount">Adults</label>
-    <input type="number" id="adultCount" name="adultCount" min="0" value="1">
+<p>Maximum 9 people in total, including the driver.</p>
 
-    <label for="youthCount">Youth</label>
-    <input type="number" id="youthCount" name="youthCount" min="0" value="0">
+<label for="adultCount">Adults (including driver)</label>
+<input type="number" id="adultCount" name="adultCount"
+       min="1" max="9" value="1" required>
 
-    <label for="childCount">Children</label>
-    <input type="number" id="childCount" name="childCount" min="0" value="0">
+<label for="youthCount">Youth</label>
+<input type="number" id="youthCount" name="youthCount"
+       min="0" max="8" value="0" required>
 
-    <label>
-      <input type="checkbox" id="olderAdult" name="olderAdult">
-      An older adult may need additional assistance
-    </label>
+<label for="childCount">Children</label>
+<input type="number" id="childCount" name="childCount"
+       min="0" max="8" value="0" required>
+
+<p id="passengerTotalMessage" aria-live="polite">
+  Total people: 1 of 9
+</p>
+
+<label>
+  <input type="checkbox" id="olderAdult" name="olderAdult">
+  An older adult may need additional assistance
+</label>
+
 
     <h3>6. Additional information</h3>
 
@@ -478,10 +489,51 @@ document.addEventListener("DOMContentLoaded", function () {
   const requestForm = document.getElementById("requestHelpForm");
   const reviewArea = document.getElementById("requestReview");
 
-  if (!requestForm || !reviewArea) return;
+  const passengerFields = [
+    document.getElementById("adultCount"),
+    document.getElementById("youthCount"),
+    document.getElementById("childCount")
+  ];
 
-  requestForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+  const passengerMessage = document.getElementById("passengerTotalMessage");
+  const passengerLimit = 9;
+
+  function validatePassengerCount() {
+    const counts = passengerFields.map(field => {
+      const value = Number(field.value);
+      return Number.isInteger(value) && value >= 0 ? value : 0;
+    });
+
+    const total = counts.reduce((sum, count) => sum + count, 0);
+
+    passengerMessage.textContent =
+      `Total people: ${total} of ${passengerLimit}`;
+
+    if (total > passengerLimit) {
+      passengerMessage.textContent +=
+        " — Maximum of 9 people, including the driver.";
+      passengerMessage.style.color = "red";
+      return false;
+    }
+
+    passengerMessage.style.color = "inherit";
+    return true;
+  }
+
+  passengerFields.forEach(field => {
+    field.addEventListener("input", validatePassengerCount);
+  });
+
+if (!requestForm || !reviewArea) return;
+
+requestForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  if (!validatePassengerCount()) {
+    alert("The maximum is 9 people in total, including the driver. Please correct the passenger count.");
+    return;
+  }
+
 
     // Check that at least one type of help is selected.
     const selectedHelp = Array.from(
