@@ -261,7 +261,20 @@
 
     <label for="requestorPhone">Cellphone number *</label>
     <input type="tel" id="requestorPhone" name="requestorPhone" required autocomplete="tel" placeholder="e.g. 306-555-1234">
+<p class="field-note">
+  Your cellphone number is required so a helper responding to your
+  request can contact you directly.
+</p>
+    <label for="requestorEmail">Email address (for request notifications only) *</label>
+<input type="email" id="requestorEmail" name="requestorEmail"
+       required autocomplete="email"
+       placeholder="e.g. yourname@example.com">
 
+<p class="field-note">
+  Your email address will only be used for notifications and updates
+  related to this roadside assistance request. It will never be used
+  for marketing or promotional purposes.
+</p>
     <h3>3. Your vehicle</h3>
 
     <label for="vehicleMake">Vehicle make (company) *</label>
@@ -576,6 +589,7 @@ requestForm.addEventListener("submit", function (event) {
     addHeading("Contact Information");
     addLine("Name", getValue("requestorName"));
     addLine("Cellphone", getValue("requestorPhone"));
+  addLine("Email address", getValue("requestorEmail"));
 
     addHeading("Vehicle Details");
     addLine("Make", getValue("vehicleMake"));
@@ -667,6 +681,7 @@ requestForm.addEventListener("submit", function (event) {
         help_types: selectedHelp,
         requester_name: getValue("requestorName"),
         requester_phone: getValue("requestorPhone"),
+        requester_email: getValue("requestorEmail"),
         vehicle_make: getValue("vehicleMake"),
         vehicle_model: getValue("vehicleModel"),
         vehicle_color: getValue("vehicleColour"),
