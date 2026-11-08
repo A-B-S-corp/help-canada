@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#12304a">
+  <meta name="description" content="Highway Help Canada connects motorists who need roadside assistance with nearby willing helpers.">
+  <title>Highway Help Canada</title>
+  <style>
+    :root {
+      --navy: #12304a;
+      --blue: #176b9b;
+      --green: #16845b;
+      --light: #f3f7fa;
+      --text: #263746;
+      --muted: #647786;
+      --white: #fff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--navy);
+      color: white;
+      padding: 18px 22px;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .brand { font-size: 21px; font-weight: bold; }
+    .brand span { color: #73d5a8; }
+
+    .header-label {
+      font-size: 12px;
+      color: #d8e5ed;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 45px 20px 65px;
+    }
+
+    .hero { text-align: center; margin-bottom: 35px; }
+
+    .hero h1 {
+      font-size: clamp(29px, 5vw, 43px);
+      color: var(--navy);
+      line-height: 1.2;
+      margin: 0 0 12px;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .tagline {
+      color: var(--green);
+      font-weight: bold;
+      margin-top: 12px;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 35px;
+    }
+
+    .choice-card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 18px rgba(20, 48, 74, .08);
+      border: 1px solid #e1eaf0;
+    }
+
+    .choice-icon { font-size: 38px; }
+
+    .choice-card h2 {
+      color: var(--navy);
+      font-size: 23px;
+      margin: 10px 0;
+    }
+
+    .choice-card p { color: var(--muted); }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 9px;
+      padding: 14px 18px;
+      margin-top: 12px;
+      color: white;
+      background: var(--blue);
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover { filter: brightness(.93); }
+
+    .helper-button { background: var(--green); }
+
+    .notice {
+      margin-top: 28px;
+      padding: 18px;
+      border-radius: 10px;
+      background: #e8f1f7;
+      color: var(--navy);
+      font-size: 14px;
+    }
+
+    .emergency {
+      margin-top: 15px;
+      background: #fff0ee;
+      border: 1px solid #f2c8c2;
+      color: #8d3028;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .panel {
+      display: none;
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      margin-top: 25px;
+      box-shadow: 0 4px 18px rgba(20, 48, 74, .08);
+    }
+
+    .panel h2 { color: var(--navy); }
+
+    .back-button {
+      background: #647786;
+      width: auto;
+      padding: 10px 18px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 22px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 650px) {
+      .choice-grid { grid-template-columns: 1fr; }
+      main { padding-top: 32px; }
+      .choice-card { padding: 23px; }
+      .header-inner { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">HIGHWAY HELP <span>CANADA</span></div>
+      <div class="header-label">A community helping community initiative</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <h1>Roadside Trouble?</h1>
+      <p>
+        Connect with nearby motorists who are willing to lend a helping hand
+        when you need non-emergency roadside assistance.
+      </p>
+      <div class="tagline">Help Is Closer Than You Think.</div>
+    </section>
+
+    <section class="choice-grid" id="choices">
+      <div class="choice-card">
+        <div class="choice-icon">🚗</div>
+        <h2>I Need Help</h2>
+        <p>
+          Having car trouble on a Canadian highway?
+          Let nearby willing motorists know what assistance you need.
+        </p>
+        <button onclick="showPanel('requestPanel')">Request Help</button>
+      </div>
+
+      <div class="choice-card">
+        <div class="choice-icon">🤝</div>
+        <h2>I Can Help</h2>
+        <p>
+          Willing to help another traveller?
+          Register the assistance you can offer and your preferred areas.
+        </p>
+        <button class="helper-button" onclick="showPanel('helperPanel')">
+          Offer Help
+        </button>
+      </div>
+    </section>
+
+    <section class="notice">
+      <strong>How it works:</strong>
+      Motorists request help, and available helpers receive matching
+      requests based on assistance type, location and geographic preferences.
+      Our planned initial matching range is 75 km.
+    </section>
+
+    <section class="emergency">
+      <strong>Important safety notice:</strong>
+      Highway Help Canada is not an emergency service. If anyone is injured,
+      in immediate danger, or involved in an emergency, call 911.
+      Never put yourself or others in danger to provide assistance.
+    </section>
+
+    <section class="panel" id="requestPanel">
+      <h2>Request Roadside Help</h2>
+      <p>This section will contain your roadside assistance request form.</p>
+      <p>Planned options include flat tire, battery boost, out of fuel,
+      mechanical trouble, towing and other assistance.</p>
+      <button class="back-button" onclick="goHome()">Back to Home</button>
+    </section>
+
+    <section class="panel" id="helperPanel">
+      <h2>Offer Roadside Help</h2>
+      <p>This section will contain your helper registration and preferences.</p>
+      <p>Helpers will be able to select assistance categories, preferred
+      towns and cities, highway corridors and flexible geographic coverage.</p>
+      <button class="back-button" onclick="goHome()">Back to Home</button>
+    </section>
+  </main>
+
+  <footer>
+    Highway Help Canada · Community support for Canadian highway travellers
+  </footer>
+
+  <script>
+    function showPanel(id) {
+      document.getElementById("home").style.display = "none";
+      document.getElementById("choices").style.display = "none";
+      document.querySelector(".notice").style.display = "none";
+      document.querySelector(".emergency").style.display = "none";
+
+      document.getElementById("requestPanel").style.display = "none";
+      document.getElementById("helperPanel").style.display = "none";
+      document.getElementById(id).style.display = "block";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function goHome() {
+      document.getElementById("home").style.display = "block";
+      document.getElementById("choices").style.display = "grid";
+      document.querySelector(".notice").style.display = "block";
+      document.querySelector(".emergency").style.display = "block";
+      document.getElementById("requestPanel").style.display = "none";
+      document.getElementById("helperPanel").style.display = "none";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
