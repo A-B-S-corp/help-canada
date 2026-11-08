@@ -572,6 +572,36 @@ document.addEventListener("DOMContentLoaded", function () {
       "This is a private preview only. Your request has NOT been sent or shared with helpers.";
     reviewArea.appendChild(notice);
 
+    // Edit Request button
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.textContent = "Edit Request";
+    editButton.className = "back-button";
+
+    editButton.addEventListener("click", function () {
+      reviewArea.replaceChildren();
+      requestForm.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+
+    reviewArea.appendChild(editButton);
+
+    // Confirm & Submit button
+    const submitButton = document.createElement("button");
+    submitButton.type = "button";
+    submitButton.textContent = "Confirm & Submit Request";
+    submitButton.className = "primary-button";
+
+    submitButton.addEventListener("click", function () {
+      alert(
+        "Your request details are confirmed. Actual submission is not connected yet. We will enable this when the secure backend is ready."
+      );
+    });
+
+    reviewArea.appendChild(submitButton);
+
     reviewArea.scrollIntoView({
       behavior: "smooth",
       block: "start"
