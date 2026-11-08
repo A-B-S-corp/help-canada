@@ -1,4 +1,5 @@
-const CACHE_NAME = "highway-help-v1";
+
+const CACHE_NAME = "highway-help-v3";
 
 const FILES_TO_CACHE = [
   "/",
@@ -35,8 +36,22 @@ self.addEventListener("fetch", event => {
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      return cachedResponse || fetch(event.request);
-    })
+    fetch(new Request(event.request, { cache: "no-store" }))
+      .then(response => {
+        if (response.ok) {
+          const copy = response.clone();
+
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, copy);
+          });
+        }
+
+        return response;
+      })
+      .catch(() => {
+        return caches.match(event.request).then(cachedResponse => {
+          return cachedResponse || caches.match("/");
+        });
+      })
   );
 });
