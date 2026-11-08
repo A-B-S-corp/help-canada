@@ -646,11 +646,96 @@ requestForm.addEventListener("submit", function (event) {
     submitButton.textContent = "Confirm & Submit Request";
     submitButton.className = "primary-button";
 
-    submitButton.addEventListener("click", function () {
-      alert(
-        "Your request details are confirmed. Actual submission is not connected yet. We will enable this when the secure backend is ready."
-      );
+    
+    submitButton.addEventListener("click", async function () {
+      submitButton.disabled = true;
+      submitButton.textContent = "Submitting...";
+
+      const otherHelpValue = getValue("otherHelp");
+      const additionalDetailsValue = getValue("additionalDetails");
+
+      const details = [
+        otherHelpValue ? "Other assistance: " + otherHelpValue : "",
+        additionalDetailsValue ? "Additional details: " + additionalDetailsValue : ""
+      ].filter(Boolean).join("\n");
+
+      const yearValue = getValue("vehicleYear");
+      const latitudeValue = getValue("gpsLatitude");
+      const longitudeValue = getValue("gpsLongitude");
+
+      const payload = {
+        help_types: selectedHelp,
+        requester_name: getValue("requestorName"),
+        requester_phone: getValue("requestorPhone"),
+        vehicle_make: getValue("vehicleMake"),
+        vehicle_model: getValue("vehicleModel"),
+        vehicle_color: getValue("vehicleColour"),
+        vehicle_year: yearValue ? Number(yearValue) : null,
+        license_plate: getValue("vehiclePlate") || null,
+        highway_name: getValue("highway"),
+        highway_direction: getValue("travelDirection"),
+        road_side: getValue("roadSide"),
+        roadside_location: getValue("nearestLocation"),
+        latitude: latitudeValue ? Number(latitudeValue) : null,
+        longitude: longitudeValue ? Number(longitudeValue) : null,
+        passenger_kids: Number(getValue("childCount")) || 0,
+        passenger_youth: Number(getValue("youthCount")) || 0,
+        passenger_adults: Number(getValue("adultCount")) || 0,
+        older_adult: document.getElementById("olderAdult").checked ? 1 : 0,
+        additional_details: details
+      };
+
+      try {
+        const response = await fetch(
+          "https://highway-help-api.4abscorpnov.workers.dev/api/requests",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "Unable to submit your request.");
+        }
+
+        reviewArea.replaceChildren();
+
+        const heading = document.createElement("h3");
+        heading.textContent = "Your Request Has Been Submitted!";
+        reviewArea.appendChild(heading);
+
+        const confirmation = document.createElement("p");
+        confirmation.textContent =
+          "Your roadside help request has been successfully saved.";
+        reviewArea.appendChild(confirmation);
+
+        const requestNumber = document.createElement("p");
+        requestNumber.textContent = "Request ID: " + result.request_id;
+        reviewArea.appendChild(requestNumber);
+
+        const expiry = document.createElement("p");
+        expiry.textContent =
+          "Expiry time recorded (automatic deletion is not enabled yet): " +
+          new Date(result.expires_at).toLocaleString();
+        reviewArea.appendChild(expiry);
+
+        const reminder = document.createElement("p");
+        reminder.textContent =
+          "Please keep your request ID for reference. Automatic deletion and helper notifications are not enabled yet.";
+        reviewArea.appendChild(reminder);
+
+      } catch (error) {
+        alert(error.message || "Something went wrong. Please try again.");
+        submitButton.disabled = false;
+        submitButton.textContent = "Confirm & Submit Request";
+      }
     });
+
 
     reviewArea.appendChild(submitButton);
 
