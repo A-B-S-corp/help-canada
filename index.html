@@ -417,16 +417,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     navigator.geolocation.getCurrentPosition(
 
-      function (position) {
-        latitudeField.value = position.coords.latitude;
-        longitudeField.value = position.coords.longitude;
+      
+function (position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
 
-        locationStatus.textContent =
-          "Your GPS location was captured successfully.";
+  latitudeField.value = latitude;
+  longitudeField.value = longitude;
 
-        locationButton.textContent = "GPS Location Captured";
-        locationButton.disabled = false;
-      },
+  const mapsLink =
+    "https://www.google.com/maps?q=" + latitude + "," + longitude;
+
+  locationStatus.innerHTML =
+    "<strong>GPS location captured successfully!</strong><br>" +
+    "Latitude: " + latitude.toFixed(6) + "<br>" +
+    "Longitude: " + longitude.toFixed(6) + "<br>" +
+    '<a href="' + mapsLink + '" target="_blank" rel="noopener noreferrer">' +
+    "View My Location on Google Maps</a>";
+
+  locationButton.textContent = "GPS Location Captured";
+  locationButton.disabled = false;
+},
+
 
       function (error) {
         locationButton.disabled = false;
