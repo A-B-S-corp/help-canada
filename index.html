@@ -4,6 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#12304a">
   <meta name="theme-color" content="#12304a">
   <meta name="description" content="Highway Help Canada connects motorists who need roadside assistance with nearby willing helpers.">
   <title>Highway Help Canada</title>
@@ -275,5 +278,15 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   </script>
+
+  <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/service-worker.js")
+        .catch(error => console.error("Service worker registration failed:", error));
+    });
+  }
+</script>
 </body>
+  
 </html>
